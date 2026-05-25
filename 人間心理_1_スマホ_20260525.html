@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>人間心理</title>
+<style>
+  /* --- Design System & CSS Variables --- */
+  :root {
+    /* Light Mode */
+    --bg-base: #f3f4f6;
+    --bg-surface: #ffffff;
+    --bg-sub: #f9fafb;
+    --text-main: #1f2937;
+    --text-sub: #4b5563;
+    --border-color: #e5e7eb;
+    
+    --color-pink: #8b5cf6;
+    --bg-pink: #f5f3ff;
+    --color-blue: #3b82f6;
+    --bg-blue: #eff6ff;
+    --color-red: #ef4444;
+    --bg-red: #fef2f2;
+    --color-green: #10b981;
+    --bg-green: #ecfdf5;
+    
+    --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --radius-md: 12px;
+    --radius-sm: 8px;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      /* Dark Mode */
+      --bg-base: #0f172a;
+      --bg-surface: #1e293b;
+      --bg-sub: #0f172a;
+      --text-main: #f8fafc;
+      --text-sub: #94a3b8;
+      --border-color: #334155;
+      
+      --color-pink: #a78bfa;
+      --bg-pink: rgba(167, 139, 250, 0.15);
+      --color-blue: #60a5fa;
+      --bg-blue: rgba(96, 165, 250, 0.15);
+      --color-red: #f87171;
+      --bg-red: rgba(248, 113, 113, 0.15);
+      --color-green: #34d399;
+      --bg-green: rgba(16, 185, 129, 0.15);
+      
+      --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
+    }
+  }
+
+  /* --- Base Styles --- */
+  * { box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Segoe UI", "Hiragino Kaku Gothic ProN", "Hiragino Sans", "BIZ UDPGothic", Meiryo, sans-serif;
+    background-color: var(--bg-base);
+    color: var(--text-main);
+    margin: 0;
+    padding: 12px;
+    line-height: 1.6;
+    font-size: 16px;
+  }
+  .container {
+    max-width: 600px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+  h1, h2, h3, h4, p { margin: 0; }
+  
+  .main-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    text-align: center;
+    line-height: 1.4;
+    color: var(--color-pink);
+    margin-bottom: 8px;
+  }
+  .sub-desc {
+    text-align: center;
+    font-size: 0.95rem;
+    color: var(--text-sub);
+    margin-bottom: 16px;
+  }
+
+  /* --- Section & Surface --- */
+  .section {
+    background-color: var(--bg-surface);
+    border-radius: var(--radius-md);
+    padding: 16px;
+    box-shadow: var(--shadow);
+  }
+  .section-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text-main);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 16px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--border-color);
+  }
+  .icon-wrapper {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-blue);
+  }
+
+  /* --- 1. Flow Chart (恋愛感情を抱く流れ) --- */
+  .flow-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .flow-step {
+    background-color: var(--bg-surface);
+    border: 2px solid var(--color-pink);
+    border-radius: var(--radius-sm);
+    padding: 10px 14px;
+    width: 100%;
+    text-align: center;
+    font-weight: 700;
+    color: var(--text-main);
+    position: relative;
+  }
+  .flow-arrow {
+    height: 16px;
+    display: flex;
+    align-items: center;
+    color: var(--color-pink);
+  }
+  .flow-highlight {
+    background-color: var(--bg-pink);
+    border: 1px solid var(--color-pink);
+    color: var(--text-main);
+  }
+  .highlight-msg {
+    margin-top: 16px;
+    padding: 14px;
+    background-color: var(--bg-pink);
+    border-radius: var(--radius-sm);
+    border-left: 4px solid var(--color-pink);
+    font-weight: 700;
+    font-size: 1.05rem;
+  }
+  .highlight-msg span {
+    color: var(--color-pink);
+  }
+
+  /* --- 2. Cards (タイミング・タイプ) --- */
+  .card-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .card {
+    background-color: var(--bg-sub);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    padding: 12px;
+  }
+  .card-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+  .card-number {
+    background-color: var(--color-blue);
+    color: #fff;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.85rem;
+    font-weight: bold;
+    flex-shrink: 0;
+  }
+  .card-title {
+    font-weight: 700;
+    font-size: 1.05rem;
+    color: var(--text-main);
+    line-height: 1.4;
+  }
+  .card-desc {
+    color: var(--text-sub);
+    font-size: 0.95rem;
+  }
+  .speech-bubble {
+    margin-top: 12px;
+    background-color: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    border-radius: 12px 12px 12px 0;
+    padding: 12px;
+    font-size: 0.9rem;
+    color: var(--text-main);
+    position: relative;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+  }
+  .speech-bubble::before {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: -8px;
+    border-width: 0 8px 8px 0;
+    border-style: solid;
+    border-color: transparent var(--border-color) transparent transparent;
+  }
+  .speech-bubble::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: -6px;
+    border-width: 0 7px 7px 0;
+    border-style: solid;
+    border-color: transparent var(--bg-surface) transparent transparent;
+  }
+  .speech-list {
+    margin: 0;
+    padding-left: 20px;
+    color: var(--text-sub);
+  }
+  
+  /* --- 3. Danger Combo --- */
+  .danger-box {
+    margin-top: 16px;
+    background-color: var(--bg-red);
+    border: 2px dashed var(--color-red);
+    border-radius: var(--radius-sm);
+    padding: 16px;
+  }
+  .danger-title {
+    color: var(--color-red);
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 12px;
+    justify-content: center;
+  }
+  .tag-cloud {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+  .tag {
+    background-color: var(--bg-surface);
+    border: 1px solid var(--color-red);
+    color: var(--color-red);
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 0.85rem;
+    font-weight: 700;
+  }
+  .tag-plus {
+    font-weight: bold;
+    color: var(--color-red);
+  }
+  .danger-result {
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid var(--color-red);
+    text-align: center;
+    color: var(--text-main);
+  }
+  .danger-result strong {
+    display: block;
+    color: var(--color-red);
+    font-size: 1.2rem;
+    margin-top: 4px;
+  }
+
+  /* --- 4. Comparison (未婚 vs 既婚) --- */
+  .compare-wrap {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  .compare-item {
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+  }
+  .compare-head {
+    padding: 12px;
+    text-align: center;
+    font-weight: bold;
+    color: #fff;
+  }
+  .compare-item.single .compare-head { background-color: var(--color-blue); }
+  .compare-item.married .compare-head { background-color: var(--color-pink); }
+  .compare-body {
+    padding: 16px;
+    background-color: var(--bg-sub);
+  }
+  .brake-list {
+    margin: 0 0 16px 0;
+    padding-left: 20px;
+    font-size: 0.95rem;
+    color: var(--text-sub);
+  }
+  .compare-flow {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    font-size: 0.9rem;
+    font-weight: bold;
+    color: var(--text-main);
+    background: var(--bg-surface);
+    padding: 12px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border-color);
+  }
+  .compare-flow svg { flex-shrink: 0; color: var(--text-sub); }
+  .compare-conclusion {
+    margin-top: 16px;
+    text-align: center;
+    font-weight: bold;
+    padding: 12px;
+    border-radius: var(--radius-sm);
+  }
+  .compare-item.single .compare-conclusion { background-color: var(--bg-blue); color: var(--color-blue); }
+  .compare-item.married .compare-conclusion { background-color: var(--bg-pink); color: var(--color-pink); }
+
+  /* --- 5. Timeline (一線を越えるステップ) --- */
+  .timeline {
+    position: relative;
+    padding-left: 24px;
+    margin-bottom: 16px;
+  }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 7px;
+    width: 2px;
+    background-color: var(--color-pink);
+  }
+  .timeline-step {
+    position: relative;
+    margin-bottom: 12px;
+  }
+  .timeline-step:last-child { margin-bottom: 0; }
+  .timeline-step::before {
+    content: '';
+    position: absolute;
+    left: -24px;
+    top: 6px;
+    width: 12px;
+    height: 12px;
+    background-color: var(--color-pink);
+    border-radius: 50%;
+    border: 2px solid var(--bg-surface);
+  }
+  .timeline-content {
+    background-color: var(--bg-sub);
+    padding: 10px 16px;
+    border-radius: var(--radius-sm);
+    font-weight: 700;
+    font-size: 0.95rem;
+    border: 1px solid var(--border-color);
+  }
+  .timeline-step.final .timeline-content {
+    background-color: var(--bg-pink);
+    border-color: var(--color-pink);
+    color: var(--color-pink);
+  }
+
+  /* --- 6. Check List (立ち止まる基準) --- */
+  .checklist {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .check-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    background-color: var(--bg-green);
+    border: 1px solid #a7f3d0;
+    padding: 12px 16px;
+    border-radius: var(--radius-sm);
+  }
+  .check-item svg {
+    color: var(--color-green);
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .check-text {
+    font-weight: bold;
+    color: var(--text-main);
+  }
+  
+  /* --- Summary --- */
+  .summary-box {
+    background-color: var(--text-main);
+    color: var(--bg-base);
+    padding: 16px;
+    border-radius: var(--radius-md);
+  }
+  .summary-title {
+    color: var(--bg-surface);
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 16px;
+    text-align: center;
+    border-bottom: 1px solid var(--text-sub);
+    padding-bottom: 12px;
+  }
+  .summary-list {
+    padding-left: 20px;
+    margin-bottom: 16px;
+  }
+  .summary-list li { margin-bottom: 8px; }
+  
+</style>
+</head>
+<body>
+
+<main class="container">
+  
+  <header>
+    <h1 class="main-title">恋愛感情の<br>メカニズムと心理プロセス</h1>
+    <p class="sub-desc">単に「かっこいい」「優しい」だけではなく、特定の要素が重なった時に気持ちが動く構造を図解化。</p>
+  </header>
+
+  <!-- セクション1：恋愛感情を抱く流れ -->
+  <section class="section">
+    <h2 class="section-title">
+      <span class="icon-wrapper">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+      </span>
+      1. 恋愛感情を抱く心理プロセス
+    </h2>
+    
+    <div class="flow-container">
+      <div class="flow-step">弱っている</div>
+      <div class="flow-arrow"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M19 12l-7 7-7-7"/></svg></div>
+      
+      <div class="flow-step">優しくされる</div>
+      <div class="flow-arrow"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M19 12l-7 7-7-7"/></svg></div>
+      
+      <div class="flow-step">安心する</div>
+      <div class="flow-arrow"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M19 12l-7 7-7-7"/></svg></div>
+      
+      <div class="flow-step flow-highlight">自分を分かってくれると感じる</div>
+      <div class="flow-arrow"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M19 12l-7 7-7-7"/></svg></div>
+      
+      <div class="flow-step flow-highlight">特別扱いされていると感じる</div>
+      <div class="flow-arrow"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M19 12l-7 7-7-7"/></svg></div>
+      
+      <div class="flow-step">もっと話したくなる</div>
+      <div class="flow-arrow"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M19 12l-7 7-7-7"/></svg></div>
+      
+      <div class="flow-step" style="background-color: var(--color-pink); color: white;">既婚と分かっていても気持ちが動く</div>
+    </div>
+
+    <div class="highlight-msg">
+      特に大きいのは、<br>
+      <span>「この人は自分を理解してくれる」</span><br>
+      <span>「自分だけ特別に扱われている」</span><br>
+      と感じた瞬間です。
+    </div>
+  </section>
+
+  <!-- セクション2：好きになりやすいタイミング -->
+  <section class="section">
+    <h2 class="section-title">
+      <span class="icon-wrapper">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+      </span>
+      2. 好きになりやすい5つのタイミング
+    </h2>
+
+    <div class="card-list">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-number">1</div>
+          <div class="card-title">弱っている時に優しくされた時</div>
+        </div>
+        <p class="card-desc">仕事、転職、人間関係、失恋などで心が弱っている時に落ち着いて話を聞いてくれると心が動く。</p>
+        <div class="speech-bubble">「大変だったね」「無理してない？」「ちゃんと頑張ってると思うよ」</div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-number">2</div>
+          <div class="card-title">自分だけ特別扱いされた時</div>
+        </div>
+        <p class="card-desc">「誰にでも優しい」ではなく、「自分にだけ少し違う」と感じた時に恋愛感情が生まれやすい。</p>
+        <ul class="speech-list">
+          <li>覚えていてくれた</li>
+          <li>気にかけてくれた</li>
+          <li>自分だけに本音を話してくれた</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-number">3</div>
+          <div class="card-title">尊敬が恋愛に変わった時</div>
+        </div>
+        <p class="card-desc">落ち着き・余裕・包容力が魅力に見え、「頼れる人」から「好き・一緒にいたい」へ変化する。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-number">4</div>
+          <div class="card-title">2人だけの時間が増えた時</div>
+        </div>
+        <p class="card-desc">最初は普通の食事でも、回数が増えると親密さが強まる。</p>
+        <div class="tag-cloud" style="justify-content: flex-start; margin-top: 8px;">
+          <span class="tag" style="border-color: var(--border-color); color: var(--text-main);">2人きり</span>
+          <span class="tag" style="border-color: var(--border-color); color: var(--text-main);">夜</span>
+          <span class="tag" style="border-color: var(--border-color); color: var(--text-main);">お酒</span>
+          <span class="tag" style="border-color: var(--border-color); color: var(--text-main);">深い相談</span>
+          <span class="tag" style="border-color: var(--border-color); color: var(--text-main);">帰り際の名残惜しさ</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-number">5</div>
+          <div class="card-title">「この人だけは分かってくれる」と感じた時</div>
+        </div>
+        <p class="card-desc">否定せず悩みを受け止め、言葉にしにくい気持ちを理解してくれると、唯一の理解者のように感じる。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- セクション3：惹かれやすい女性のタイプ -->
+  <section class="section">
+    <h2 class="section-title">
+      <span class="icon-wrapper">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+      </span>
+      3. 惹かれやすい女性の7つのタイプ
+    </h2>
+
+    <div class="card-list">
+      <div class="card"><div class="card-title">1. 真面目で我慢しがちな女性</div><p class="card-desc">弱音を吐かず頑張りすぎる分、優しく受け止めてくれる男性に心を開きやすい。</p></div>
+      <div class="card"><div class="card-title">2. おとなしくて受け身な女性</div><p class="card-desc">落ち着いた年上男性に安心する。断るのが苦手で距離が近づきすぎると苦しくなることも。</p></div>
+      <div class="card"><div class="card-title">3. 自己肯定感が下がっている女性</div>
+        <p class="card-desc">自信を失っている時の褒め言葉が深く刺さる。</p>
+        <div class="speech-bubble">「〇〇さんのそういうところ素敵」「ちゃんと見てるよ」</div>
+      </div>
+      <div class="card"><div class="card-title">4. 年上男性・頼れる男性に弱い女性</div><p class="card-desc">同年代に幼さを感じ、既婚男性の余裕・経済力・聞き上手さを魅力として受け取りやすい。</p></div>
+      <div class="card"><div class="card-title">5. 恋愛経験が少ない女性</div><p class="card-desc">優しくて余裕のある男性に惹かれやすく、優しさを「特別な好意」と受け取りやすい。</p></div>
+      <div class="card"><div class="card-title">6. 孤独な時期の女性</div><p class="card-desc">転職、新生活、失恋後など。心の支えを求めやすい時期。</p></div>
+      <div class="card"><div class="card-title">7. 境界線を引くのが苦手な女性</div><p class="card-desc">「断ったら悪い」「嫌われたくない」と考え、深い相談が続くと距離が近づきすぎる。</p></div>
+    </div>
+
+    <!-- 特に危ない組み合わせ -->
+    <div class="danger-box">
+      <div class="danger-title">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+        特に危ない組み合わせ
+      </div>
+      <p class="card-desc" style="text-align:center; margin-bottom: 12px; color: var(--color-red);">以下の条件が重なると、気持ちが極めて動きやすくなります。</p>
+      
+      <div class="tag-cloud">
+        <span class="tag">おとなしい</span><span class="tag-plus">＋</span>
+        <span class="tag">真面目</span><span class="tag-plus">＋</span>
+        <span class="tag">疲れている</span><span class="tag-plus">＋</span>
+        <span class="tag">自己肯定感低下</span><span class="tag-plus">＋</span>
+        <span class="tag">年上への安心感</span><span class="tag-plus">＋</span>
+        <span class="tag">2人きり</span><span class="tag-plus">＋</span>
+        <span class="tag">夜・お酒</span><span class="tag-plus">＋</span>
+        <span class="tag">相談</span><span class="tag-plus">＋</span>
+        <span class="tag">特別扱い</span>
+      </div>
+
+      <div class="danger-result">
+        「落としやすいタイプ」ではなく…
+        <strong>傷つきやすいタイプ</strong>
+      </div>
+    </div>
+  </section>
+
+  <!-- セクション4：未婚女性と既婚女性の違い -->
+  <section class="section">
+    <h2 class="section-title">
+      <span class="icon-wrapper">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect><path d="M12 11h4"></path><path d="M12 16h4"></path><path d="M8 11h.01"></path><path d="M8 16h.01"></path></svg>
+      </span>
+      4. 未婚女性と既婚女性の違い
+    </h2>
+    <p class="sub-desc" style="text-align: left;">好きになる「基本ロジック」は同じですが、感情が生まれた後の<strong>「ブレーキ」</strong>が異なります。</p>
+
+    <div class="compare-wrap">
+      <!-- 未婚 -->
+      <div class="compare-item single">
+        <div class="compare-head">未婚女性の場合</div>
+        <div class="compare-body">
+          <ul class="brake-list">
+            <li>相手は既婚者だからダメ</li>
+            <li>将来がないかもしれない</li>
+            <li>傷つきそう</li>
+            <li>奥さんに悪い</li>
+          </ul>
+          <div class="compare-conclusion">好きだけど、<br>相手は既婚者だから苦しい</div>
+        </div>
+      </div>
+
+      <!-- 既婚 -->
+      <div class="compare-item married">
+        <div class="compare-head">既婚女性の場合</div>
+        <div class="compare-body">
+          <ul class="brake-list">
+            <li>相手も自分も既婚者</li>
+            <li>夫に悪い、子どもを壊せない</li>
+            <li>周囲に知られたら困る</li>
+            <li>でも心の支えになっている</li>
+          </ul>
+          
+          <div class="compare-flow">
+            好き <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            罪悪感 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            癒される <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            離れにくい
+          </div>
+
+          <div class="compare-conclusion">背負うものが重く、<br>より複雑で苦しい</div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="card" style="margin-top: 16px;">
+      <div class="card-title">💡 既婚女性が特に好きになりやすいタイミング</div>
+      <p class="card-desc">夫婦関係が冷えている、女性として扱われない、毎日が仕事と家事育児だけ…そんな時に<strong>「癒される・分かってもらえる・女性として見てもらえる・心が戻る」</strong>感覚から始まります。</p>
+    </div>
+  </section>
+
+  <!-- セクション5：一線を越えてしまう時 -->
+  <section class="section">
+    <h2 class="section-title">
+      <span class="icon-wrapper">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"></path></svg>
+      </span>
+      5. 一線を越えてしまうステップと条件
+    </h2>
+    <p class="sub-desc" style="text-align: left;">理性のブレーキよりも、感情のつながり・安心・特別感が強くなった時に一線を越えやすくなります。</p>
+
+    <div class="timeline">
+      <div class="timeline-step"><div class="timeline-content">最初は相談・食事だけ</div></div>
+      <div class="timeline-step"><div class="timeline-content">自分を分かってくれると感じる</div></div>
+      <div class="timeline-step"><div class="timeline-content">会うのが楽しみになる</div></div>
+      <div class="timeline-step"><div class="timeline-content">この人だけは特別と思う</div></div>
+      <div class="timeline-step"><div class="timeline-content">夜・お酒・2人きり・帰り際の寂しさが重なる</div></div>
+      <div class="timeline-step final"><div class="timeline-content">一線を越えてしまう</div></div>
+    </div>
+
+    <h3 style="font-size: 1.05rem; margin-bottom: 12px; color: var(--color-pink);">一線を越えやすい5つの条件</h3>
+    <div class="card-list">
+      <div class="card"><div class="card-title">1. 心が弱っている時</div><p class="card-desc">孤独や不安が強く「甘えたい」「分かってくれる人を失いたくない」となりやすい。</p></div>
+      <div class="card"><div class="card-title">2. 相手が唯一の理解者に見えた時</div><p class="card-desc">他に相談できる人がいないと、理性より感情が強くなり依存度が高まる。</p></div>
+      <div class="card"><div class="card-title">3. 2人きり・夜・お酒が重なった時</div><p class="card-desc">判断が緩み、距離が近くなり、感情が出やすく、雰囲気に流されやすくなる。</p></div>
+      <div class="card"><div class="card-title">4. 帰り際に名残惜しさが出た時</div><p class="card-desc">食事中よりも帰り際。「まだ帰りたくない」「次いつ会えるか分からない」気持ちが理性を上回る。</p></div>
+      <div class="card"><div class="card-title">5. 罪悪感より恋しさが勝った時</div><p class="card-desc">「ダメなのは分かっている。でも今だけでも一緒にいたい」と感情が強くなっている状態。</p></div>
+    </div>
+  </section>
+
+  <!-- セクション6：注意点・判断基準 -->
+  <section class="section" style="border: 2px solid var(--color-green);">
+    <h2 class="section-title" style="color: var(--color-green); border-bottom-color: var(--bg-green);">
+      <span class="icon-wrapper" style="color: var(--color-green);">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+      </span>
+      6. 立ち止まるための5つの判断基準
+    </h2>
+    <p class="sub-desc" style="text-align: left; color: var(--text-main);">
+      既婚男性に惹かれること自体はあり得ます。しかし感情が強くなる前に、<strong>「本当に恋愛なのか、弱っている時の依存なのか」</strong>を一度立ち止まって考える必要があります。
+    </p>
+
+    <ul class="checklist">
+      <li class="check-item">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"></path></svg>
+        <span class="check-text">その関係を人に言えるか</span>
+      </li>
+      <li class="check-item">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"></path></svg>
+        <span class="check-text">昼間でも同じ気持ちか</span>
+      </li>
+      <li class="check-item">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"></path></svg>
+        <span class="check-text">お酒がなくても会いたいか</span>
+      </li>
+      <li class="check-item">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"></path></svg>
+        <span class="check-text">相手が既婚でも苦しくならないか</span>
+      </li>
+      <li class="check-item">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"></path></svg>
+        <span class="check-text">自分だけが傷つく関係になっていないか</span>
+      </li>
+    </ul>
+  </section>
+
+  <!-- まとめ -->
+  <div class="summary-box">
+    <div class="summary-title">まとめ</div>
+    <ul class="summary-list">
+      <li><strong>惹かれる入口：</strong>安心、理解、尊敬、特別扱い、弱っている時の支え</li>
+      <li><strong>一線を越える条件：</strong>2人きり、夜、お酒、深い相談、名残惜しさ、罪悪感より恋しさが勝つ</li>
+    </ul>
+    <p style="font-size: 0.9rem; opacity: 0.9; margin-top: 12px; border-top: 1px solid rgba(255,255,255,0.2); padding-top: 12px;">
+      未婚・既婚問わず好きになる基本ロジックは同じですが、既婚女性の方が家庭や生活基盤が絡むため、感情が動いた後の苦しさはより複雑になりやすい傾向があります。
+    </p>
+  </div>
+
+</main>
+
+</body>
+</html>
